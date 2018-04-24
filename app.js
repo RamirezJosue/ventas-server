@@ -16,20 +16,19 @@ mongoose.connection.openUri('mongodb://localhost:27017/ventasDB', (err, res) => 
 // Inicializar variables
 var app = express();
 
+// Importar Rutas
+var usuarioRoutes = require('./routes/usuario');
+var appRoutes = require('./routes/app');
+
 
 // Rutas
-app.get('/', (req, res, next) => {
+app.use('/usuario', usuarioRoutes);
+app.use('/', appRoutes);
 
-    res.status(200).json({
-        ok: true,
-        mensaje: 'Peticion realizad correctamente'
-    });
-
-})
 
 
 
 // Escuchar peticiones
-app.listen(8000, () => {
-    console.log('Express server puerto 8000: \x1b[32m%s\x1b[0m', 'online')
+app.listen(3000, () => {
+    console.log('Express server puerto 3000: \x1b[32m%s\x1b[0m', 'online')
 })
