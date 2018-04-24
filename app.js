@@ -3,7 +3,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 
 // Conexion a la base de datos
-mongoose.connection.openUri('mongodb://localhost:27017/hospitalDB', (err, res) => {
+mongoose.connection.openUri('mongodb://localhost:27017/ventasDB', (err, res) => {
 
     if (err) throw err;
 
