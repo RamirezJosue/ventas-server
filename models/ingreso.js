@@ -1,17 +1,12 @@
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-var Shema = mongoose.Schema;
 
-var ingresoShema = new Shema({
-    tipoComprobante: { type: String, required: [true, 'El comprobante es necesario'] },
-    serieComprobante: { type: String, required: false },
-    numComprobante: { type: String, required: [true, 'Numero de comprobante es necesario'] },
-    fechaHora: { type: Date, required: true, default: Date.now },
-    impuesto: { type: Number, required: [true, 'El impuesto es necesario'] },
-    totalCompra: { type: Number, required: [true, 'Total de compra es necesario'] },
-    estado: { type: String, required: [true, 'Estado es necesario'] },
-    usuario: { type: Schema.Types.ObjectId, ref: 'Usuario', required: true },
-    proveedor: { type: Schema.Types.ObjectId, ref: 'Persona', required: true },
+var ingresoSchema = new Schema({
+    cantidad: { type: Number, required: [true, 'Cantidad es necesario'] },
+    precioVenta: { type: Number, required: [true, 'Precio venta es necesario'] },
+    descuento: { type: Number, required: [true, 'Descuento es necesario es necesario'] },
+    articulo: { type: Schema.Types.ObjectId, ref: 'Articulo', required: true },
+    venta: { type: Schema.Types.ObjectId, ref: 'Venta', required: true }
 });
-
-module.exports = mongoose.model('Ingreso', ingresoShema);
+module.exports = mongoose.model('Ingreso', ingresoSchema);

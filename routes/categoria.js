@@ -11,36 +11,21 @@ var Categoria = require('../models/categoria');
 // ==========================================
 app.get('/', (req, res, next) => {
 
-    var desde = req.query.desde || 0;
-    desde = Number(desde);
-
     Categoria.find({})
-        .skip(desde)
-        .limit(5)
-        .populate('usuario', 'nombre email')
-        .populate('hospital')
         .exec(
             (err, categorias) => {
-
                 if (err) {
                     return res.status(500).json({
                         ok: false,
-                        mensaje: 'Error cargando categoria',
+                        mensaje: 'Error cargando persona',
                         errors: err
                     });
                 }
 
-                Categoria.count({}, (err, conteo) => {
-                    res.status(200).json({
-                        ok: true,
-                        categorias: categorias,
-                        total: conteo
-                    });
-                })
-
-
-
-
+                res.status(200).json({
+                    ok: true,
+                    categorias
+                });
 
             });
 });
@@ -77,7 +62,7 @@ app.put('/:id', mdAutenticacion.verificaToken, (req, res) => {
         categoria.nombre = body.nombre;
         categoria.descripcion = body.descripcion;
 
-        categoria.save((err, medicoGuardado) => {
+        categoria.save((err, categoriaGuardado) => {
 
             if (err) {
                 return res.status(400).json({
@@ -90,7 +75,7 @@ app.put('/:id', mdAutenticacion.verificaToken, (req, res) => {
 
             res.status(200).json({
                 ok: true,
-                categoria: medicoGuardado
+                categoria: categoriaGuardado
             });
 
         });
@@ -113,7 +98,7 @@ app.post('/', mdAutenticacion.verificaToken, (req, res) => {
         descripcion: body.descripcion
     });
 
-    categoria.save((err, medicoGuardado) => {
+    categoria.save((err, categoriaGuardado) => {
 
         if (err) {
             return res.status(400).json({
@@ -125,7 +110,7 @@ app.post('/', mdAutenticacion.verificaToken, (req, res) => {
 
         res.status(201).json({
             ok: true,
-            categoria: medicoGuardado,
+            categoria: categoriaGuardado,
         });
 
 
@@ -141,7 +126,7 @@ app.delete('/:id', mdAutenticacion.verificaToken, (req, res) => {
 
     var id = req.params.id;
 
-    Categoria.findByIdAndRemove(id, (err, medicoBorrado) => {
+    Categoria.findByIdAndRemove(id, (err, categoriaBorrado) => {
 
         if (err) {
             return res.status(500).json({
@@ -151,7 +136,7 @@ app.delete('/:id', mdAutenticacion.verificaToken, (req, res) => {
             });
         }
 
-        if (!medicoBorrado) {
+        if (!categoriaBorrado) {
             return res.status(400).json({
                 ok: false,
                 mensaje: 'No existe un categoria con ese id',
@@ -161,7 +146,7 @@ app.delete('/:id', mdAutenticacion.verificaToken, (req, res) => {
 
         res.status(200).json({
             ok: true,
-            categoria: medicoBorrado
+            categoria: categoriaBorrado
         });
 
     });

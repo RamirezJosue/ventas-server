@@ -7,40 +7,25 @@ var app = express();
 var Venta = require('../models/venta');
 
 // ==========================================
-// Obtener todos los Medicos
+// Obtener todos los ventas
 // ==========================================
 app.get('/', (req, res, next) => {
 
-    var desde = req.query.desde || 0;
-    desde = Number(desde);
-
     Venta.find({})
-        .skip(desde)
-        .limit(5)
-        .populate('usuario', 'nombre email')
-        .populate('hospital')
         .exec(
             (err, ventas) => {
-
                 if (err) {
                     return res.status(500).json({
                         ok: false,
-                        mensaje: 'Error cargando venta',
+                        mensaje: 'Error cargando persona',
                         errors: err
                     });
                 }
 
-                Venta.count({}, (err, conteo) => {
-                    res.status(200).json({
-                        ok: true,
-                        ventas: ventas,
-                        total: conteo
-                    });
-                })
-
-
-
-
+                res.status(200).json({
+                    ok: true,
+                    ventas
+                });
 
             });
 });
@@ -84,7 +69,7 @@ app.put('/:id', mdAutenticacion.verificaToken, (req, res) => {
         venta.cliente = body.cliente;
 
 
-        venta.save((err, medicoGuardado) => {
+        venta.save((err, ventaGuardado) => {
 
             if (err) {
                 return res.status(400).json({
@@ -97,7 +82,7 @@ app.put('/:id', mdAutenticacion.verificaToken, (req, res) => {
 
             res.status(200).json({
                 ok: true,
-                venta: medicoGuardado
+                venta: ventaGuardado
             });
 
         });
@@ -127,7 +112,7 @@ app.post('/', mdAutenticacion.verificaToken, (req, res) => {
         cliente: body.cliente
     });
 
-    venta.save((err, medicoGuardado) => {
+    venta.save((err, ventaGuardado) => {
 
         if (err) {
             return res.status(400).json({
@@ -139,7 +124,7 @@ app.post('/', mdAutenticacion.verificaToken, (req, res) => {
 
         res.status(201).json({
             ok: true,
-            venta: medicoGuardado,
+            venta: ventaGuardado,
         });
 
 
@@ -155,7 +140,7 @@ app.delete('/:id', mdAutenticacion.verificaToken, (req, res) => {
 
     var id = req.params.id;
 
-    Venta.findByIdAndRemove(id, (err, medicoBorrado) => {
+    Venta.findByIdAndRemove(id, (err, ventaBorrado) => {
 
         if (err) {
             return res.status(500).json({
@@ -165,7 +150,7 @@ app.delete('/:id', mdAutenticacion.verificaToken, (req, res) => {
             });
         }
 
-        if (!medicoBorrado) {
+        if (!ventaBorrado) {
             return res.status(400).json({
                 ok: false,
                 mensaje: 'No existe un venta con ese id',
@@ -175,7 +160,7 @@ app.delete('/:id', mdAutenticacion.verificaToken, (req, res) => {
 
         res.status(200).json({
             ok: true,
-            venta: medicoBorrado
+            venta: ventaBorrado
         });
 
     });
