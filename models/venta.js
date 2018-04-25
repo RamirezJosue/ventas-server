@@ -11,6 +11,6 @@ var ventaSchema = new Schema({
     totalVenta: { type: Number, required: [true, 'Total venta es necesario'] },
     estado: { type: String, required: [true, 'Estado es necesario'] },
     usuario: { type: Schema.Types.ObjectId, ref: 'Usuario', required: true },
-    persona: { type: Schema.Types.ObjectId, ref: 'Persona', required: [true, 'El	id	persona	es	un	campo	obligatorio'] }
+    cliente: { type: Schema.Types.ObjectId, ref: 'Persona', required: [true, 'El	id	persona	es	un	campo	obligatorio'] }
 });
 module.exports = mongoose.model('Venta', ventaSchema);

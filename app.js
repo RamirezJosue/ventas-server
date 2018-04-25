@@ -18,6 +18,7 @@ var usuarioRoutes = require('./routes/usuario');
 var loginRoutes = require('./routes/login');
 var ventaRoutes = require('./routes/venta');
 var personaRoutes = require('./routes/persona');
+var categoriaRoutes = require('./routes/categoria');
 
 
 // Conexion a la base de datos
@@ -36,6 +37,7 @@ app.use('/usuario', usuarioRoutes);
 app.use('/login', loginRoutes);
 app.use('/venta', ventaRoutes);
 app.use('/persona', personaRoutes);
+app.use('/categoria', categoriaRoutes);
 app.use('/', appRoutes);
 
 

@@ -77,12 +77,11 @@ app.put('/:id', mdAutenticacion.verificaToken, (req, res) => {
         venta.tipoComprobante = body.tipoComprobante;
         venta.serieComprobante = body.serieComprobante;
         venta.numComprobante = body.numComprobante;
-        // venta.fechaHora = body.fechaHora;
         venta.impuesto = body.impuesto;
         venta.totalVenta = body.totalVenta;
         venta.estado = body.estado;
         venta.usuario = req.usuario._id;
-        venta.persona = body.persona;
+        venta.cliente = body.cliente;
 
 
         venta.save((err, medicoGuardado) => {
@@ -125,7 +124,7 @@ app.post('/', mdAutenticacion.verificaToken, (req, res) => {
         totalVenta: body.totalVenta,
         estado: body.estado,
         usuario: req.usuario._id,
-        persona: body.persona
+        cliente: body.cliente
     });
 
     venta.save((err, medicoGuardado) => {

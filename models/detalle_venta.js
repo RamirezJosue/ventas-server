@@ -1,13 +1,12 @@
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-var Shema = mongoose.Schema;
 
-var detalleVentaShema = new Shema({
+var detalleVentaSchema = new Schema({
     cantidad: { type: Number, required: [true, 'Cantidad es necesario'] },
     precioVenta: { type: Number, required: [true, 'Precio venta es necesario'] },
     descuento: { type: Number, required: [true, 'Descuento es necesario es necesario'] },
     articulo: { type: Schema.Types.ObjectId, ref: 'Articulo', required: true },
-    venta: { type: Schema.Types.ObjectId, ref: 'Venta', required: true },
+    venta: { type: Schema.Types.ObjectId, ref: 'Venta', required: true }
 });
-
-module.exports = mongoose.model('DetalleVenta', detalleVentaShema);
+module.exports = mongoose.model('Venta', detalleVentaSchema);
