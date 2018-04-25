@@ -1,22 +1,27 @@
 var express = require('express');
-var bcrypt = require('bcryptjs');
-var app = express();
 
 var mdAutenticacion = require('../middlewares/autenticacion');
 
+var app = express();
 
 var Venta = require('../models/venta');
 
-
 // ==========================================
-// Obtener todos los ventas
+// Obtener todos los Medicos
 // ==========================================
-
 app.get('/', (req, res, next) => {
 
-    Venta.find({}, 'nombre tipoDocumento numDocumento direccion telefono email login img condicion role')
+    var desde = req.query.desde || 0;
+    desde = Number(desde);
+
+    Venta.find({})
+        .skip(desde)
+        .limit(5)
+        .populate('usuario', 'nombre email')
+        .populate('hospital')
         .exec(
             (err, ventas) => {
+
                 if (err) {
                     return res.status(500).json({
                         ok: false,
@@ -25,18 +30,25 @@ app.get('/', (req, res, next) => {
                     });
                 }
 
-                res.status(200).json({
-                    ok: true,
-                    ventas
-                });
+                Venta.count({}, (err, conteo) => {
+                    res.status(200).json({
+                        ok: true,
+                        ventas: ventas,
+                        total: conteo
+                    });
+                })
+
+
+
+
 
             });
 });
 
+
 // ==========================================
 // Actualizar venta
 // ==========================================
-
 app.put('/:id', mdAutenticacion.verificaToken, (req, res) => {
 
     var id = req.params.id;
@@ -65,16 +77,15 @@ app.put('/:id', mdAutenticacion.verificaToken, (req, res) => {
         venta.tipoComprobante = body.tipoComprobante;
         venta.serieComprobante = body.serieComprobante;
         venta.numComprobante = body.numComprobante;
-        venta.fechaHora = body.fechaHora;
+        // venta.fechaHora = body.fechaHora;
         venta.impuesto = body.impuesto;
         venta.totalVenta = body.totalVenta;
         venta.estado = body.estado;
-        venta.cliente = req.cliente._id;
         venta.usuario = req.usuario._id;
+        venta.persona = body.persona;
 
 
-
-        venta.save((err, ventaGuardado) => {
+        venta.save((err, medicoGuardado) => {
 
             if (err) {
                 return res.status(400).json({
@@ -84,11 +95,10 @@ app.put('/:id', mdAutenticacion.verificaToken, (req, res) => {
                 });
             }
 
-            ventaGuardado.clave = ':)';
 
             res.status(200).json({
                 ok: true,
-                venta: ventaGuardado
+                venta: medicoGuardado
             });
 
         });
@@ -102,7 +112,6 @@ app.put('/:id', mdAutenticacion.verificaToken, (req, res) => {
 // ==========================================
 // Crear un nuevo venta
 // ==========================================
-
 app.post('/', mdAutenticacion.verificaToken, (req, res) => {
 
     var body = req.body;
@@ -115,11 +124,12 @@ app.post('/', mdAutenticacion.verificaToken, (req, res) => {
         impuesto: body.impuesto,
         totalVenta: body.totalVenta,
         estado: body.estado,
-        cliente: req.cleinte._id,
-        usuario: req.usuario._id
+        usuario: req.usuario._id,
+        persona: body.persona
     });
 
-    venta.save((err, ventaGuardado) => {
+    venta.save((err, medicoGuardado) => {
+
         if (err) {
             return res.status(400).json({
                 ok: false,
@@ -127,23 +137,26 @@ app.post('/', mdAutenticacion.verificaToken, (req, res) => {
                 errors: err
             });
         }
+
         res.status(201).json({
             ok: true,
-            venta: ventaGuardado,
-            ventatoken: req.venta
+            venta: medicoGuardado,
         });
-    })
+
+
+    });
+
 });
 
-// ==========================================
-// Borrar un venta por el id
-// ==========================================
 
+// ============================================
+//   Borrar venta por el id
+// ============================================
 app.delete('/:id', mdAutenticacion.verificaToken, (req, res) => {
 
     var id = req.params.id;
 
-    Venta.findByIdAndRemove(id, (err, ventaBorrado) => {
+    Venta.findByIdAndRemove(id, (err, medicoBorrado) => {
 
         if (err) {
             return res.status(500).json({
@@ -153,7 +166,7 @@ app.delete('/:id', mdAutenticacion.verificaToken, (req, res) => {
             });
         }
 
-        if (!ventaBorrado) {
+        if (!medicoBorrado) {
             return res.status(400).json({
                 ok: false,
                 mensaje: 'No existe un venta con ese id',
@@ -163,11 +176,12 @@ app.delete('/:id', mdAutenticacion.verificaToken, (req, res) => {
 
         res.status(200).json({
             ok: true,
-            venta: ventaBorrado
+            venta: medicoBorrado
         });
 
     });
 
 });
+
 
 module.exports = app;
