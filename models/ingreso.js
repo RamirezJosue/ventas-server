@@ -13,3 +13,5 @@ var ingresoShema = new Shema({
     usuario: { type: Schema.Types.ObjectId, ref: 'Usuario', required: true },
     proveedor: { type: Schema.Types.ObjectId, ref: 'Persona', required: true },
 });
+
+module.exports = mongoose.model('Ingreso', ingresoShema);

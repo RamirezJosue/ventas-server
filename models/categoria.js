@@ -7,3 +7,5 @@ var categoriaShema = new Shema({
     descripcion: { type: String, required: false },
     condicion: { type: Boolean, required: true, default: false },
 });
+
+module.exports = mongoose.model('Categoria', categoriaShema);

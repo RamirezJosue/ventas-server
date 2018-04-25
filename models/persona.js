@@ -12,3 +12,5 @@ var personaShema = new Shema({
     email: { type: String, unique: true, required: false }
 
 });
+
+module.exports = mongoose.model('Persona', personaShema);

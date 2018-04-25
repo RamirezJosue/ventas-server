@@ -16,6 +16,8 @@ app.use(bodyParser.json())
 var appRoutes = require('./routes/app');
 var usuarioRoutes = require('./routes/usuario');
 var loginRoutes = require('./routes/login');
+// var ventaRoutes = require('./routes/venta');
+var personaRoutes = require('./routes/persona');
 
 
 // Conexion a la base de datos
@@ -32,6 +34,8 @@ mongoose.connection.openUri('mongodb://localhost:27017/ventasDB', (err, res) => 
 // Rutas
 app.use('/usuario', usuarioRoutes);
 app.use('/login', loginRoutes);
+// app.use('/venta', ventaRoutes);
+app.use('/persona', personaRoutes);
 app.use('/', appRoutes);
 
 

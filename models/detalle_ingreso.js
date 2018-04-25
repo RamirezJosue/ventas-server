@@ -10,3 +10,5 @@ var detalleIngresoShema = new Shema({
     ingreso: { type: Schema.Types.ObjectId, ref: 'Ingreso', required: true }
 
 });
+
+module.exports = mongoose.model('DetalleIngreso', detalleIngresoShema);

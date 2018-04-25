@@ -9,3 +9,5 @@ var detalleVentaShema = new Shema({
     articulo: { type: Schema.Types.ObjectId, ref: 'Articulo', required: true },
     venta: { type: Schema.Types.ObjectId, ref: 'Venta', required: true },
 });
+
+module.exports = mongoose.model('DetalleVenta', detalleVentaShema);

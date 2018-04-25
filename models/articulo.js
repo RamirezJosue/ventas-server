@@ -11,3 +11,5 @@ var articuloShema = new Shema({
     condicion: { type: Boolean, required: true, default: false },
     categoria: { type: Schema.Types.ObjectId, ref: 'Categoria', required: true },
 });
+
+module.exports = mongoose.model('Articulo', articuloShema);
