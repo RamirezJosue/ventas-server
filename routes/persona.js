@@ -82,7 +82,6 @@ app.put('/:id', mdAutenticacion.verificaToken, (req, res) => {
                 });
             }
 
-            personaGuardado.clave = ':)';
 
             res.status(200).json({
                 ok: true,

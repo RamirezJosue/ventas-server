@@ -75,7 +75,6 @@ app.put('/:id', mdAutenticacion.verificaToken, (req, res) => {
                 });
             }
 
-            permisoGuardado.clave = ':)';
 
             res.status(200).json({
                 ok: true,
