@@ -12,6 +12,8 @@ var DetalleIngreso = require('../models/detalleIngreso');
 app.get('/', (req, res, next) => {
 
     DetalleIngreso.find({})
+        .populate('articulo')
+        .populate('ingreso')
         .exec(
             (err, detalleIngresos) => {
                 if (err) {

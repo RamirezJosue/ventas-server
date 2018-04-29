@@ -12,12 +12,14 @@ var DetalleVenta = require('../models/detalleVenta');
 app.get('/', (req, res, next) => {
 
     DetalleVenta.find({})
+        .populate('venta')
+        .populate('articulo')
         .exec(
             (err, detalleVentas) => {
                 if (err) {
                     return res.status(500).json({
                         ok: false,
-                        mensaje: 'Error cargando persona',
+                        mensaje: 'Error cargando Detalle venta',
                         errors: err
                     });
                 }

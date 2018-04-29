@@ -12,6 +12,8 @@ var Ingreso = require('../models/ingreso');
 app.get('/', (req, res, next) => {
 
     Ingreso.find({})
+        .populate('venta')
+        .populate('articulo')
         .exec(
             (err, ingresos) => {
                 if (err) {

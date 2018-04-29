@@ -15,6 +15,8 @@ var UsuarioPermiso = require('../models/UsuarioPermiso');
 app.get('/', (req, res, next) => {
 
     UsuarioPermiso.find({})
+        .populate('usuario', 'nombre')
+        .populate('permiso')
         .exec(
             (err, usuarioPermisos) => {
                 if (err) {

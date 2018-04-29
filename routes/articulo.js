@@ -12,6 +12,7 @@ var Articulo = require('../models/articulo');
 app.get('/', (req, res, next) => {
 
     Articulo.find({})
+        .populate('categoria')
         .exec(
             (err, articulos) => {
                 if (err) {
