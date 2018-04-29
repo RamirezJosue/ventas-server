@@ -11,7 +11,12 @@ var Venta = require('../models/venta');
 // ==========================================
 app.get('/', (req, res, next) => {
 
+    var desde = req.query.desde || 0;
+    desde = Number(desde);
+
     Venta.find({})
+        .skip(desde)
+        .limit(5)
         .populate('usuario', 'nombre')
         .populate('cliente')
         .exec(
@@ -24,10 +29,15 @@ app.get('/', (req, res, next) => {
                     });
                 }
 
-                res.status(200).json({
-                    ok: true,
-                    ventas
-                });
+                Venta.count({}, (err, conteo) => {
+                    res.status(200).json({
+                        ok: true,
+                        ventas,
+                        total: conteo
+                    });
+                })
+
+
 
             });
 });

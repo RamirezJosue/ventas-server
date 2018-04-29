@@ -14,7 +14,12 @@ var Persona = require('../models/persona');
 
 app.get('/', (req, res, next) => {
 
+    var desde = req.query.desde || 0;
+    desde = Number(desde);
+
     Persona.find({})
+        .skip(desde)
+        .limit(5)
         .exec(
             (err, personas) => {
                 if (err) {
@@ -25,10 +30,13 @@ app.get('/', (req, res, next) => {
                     });
                 }
 
-                res.status(200).json({
-                    ok: true,
-                    personas
-                });
+                Persona.count({}, (err, conteo) => {
+                    res.status(200).json({
+                        ok: true,
+                        personas,
+                        total: conteo
+                    });
+                })
 
             });
 });

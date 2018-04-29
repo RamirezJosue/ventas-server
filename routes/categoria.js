@@ -11,22 +11,29 @@ var Categoria = require('../models/categoria');
 // ==========================================
 app.get('/', (req, res, next) => {
 
+    var desde = req.query.desde || 0;
+    desde = Number(desde);
+
     Categoria.find({})
+        .skip(desde)
+        .limit(5)
         .exec(
             (err, categorias) => {
                 if (err) {
                     return res.status(500).json({
                         ok: false,
-                        mensaje: 'Error cargando persona',
+                        mensaje: 'Error cargando categoria',
                         errors: err
                     });
                 }
 
-                res.status(200).json({
-                    ok: true,
-                    categorias
+                Categoria.count({}, (err, conteo) => {
+                    res.status(200).json({
+                        ok: true,
+                        categorias,
+                        total: conteo
+                    });
                 });
-
             });
 });
 

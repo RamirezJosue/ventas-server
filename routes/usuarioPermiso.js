@@ -14,7 +14,12 @@ var UsuarioPermiso = require('../models/UsuarioPermiso');
 
 app.get('/', (req, res, next) => {
 
+    var desde = req.query.desde || 0;
+    desde = Number(desde);
+
     UsuarioPermiso.find({})
+        .skip(desde)
+        .limit(5)
         .populate('usuario', 'nombre')
         .populate('permiso')
         .exec(
@@ -27,11 +32,13 @@ app.get('/', (req, res, next) => {
                     });
                 }
 
-                res.status(200).json({
-                    ok: true,
-                    usuarioPermisos
-                });
-
+                UsuarioPermiso.count({}, (err, conteo) => {
+                    res.status(200).json({
+                        ok: true,
+                        usuarioPermisos,
+                        total: conteo
+                    });
+                })
             });
 });
 

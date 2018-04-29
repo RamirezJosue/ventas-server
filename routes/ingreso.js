@@ -11,7 +11,12 @@ var Ingreso = require('../models/ingreso');
 // ==========================================
 app.get('/', (req, res, next) => {
 
+    var desde = req.query.desde || 0;
+    desde = Number(desde);
+
     Ingreso.find({})
+        .skip(desde)
+        .limit(5)
         .populate('venta')
         .populate('articulo')
         .exec(
@@ -24,10 +29,13 @@ app.get('/', (req, res, next) => {
                     });
                 }
 
-                res.status(200).json({
-                    ok: true,
-                    ingresos
-                });
+                Ingreso.count({}, (err, conteo) => {
+                    res.status(200).json({
+                        ok: true,
+                        ingresos,
+                        total: conteo
+                    });
+                })
 
             });
 });

@@ -11,7 +11,12 @@ var Articulo = require('../models/articulo');
 // ==========================================
 app.get('/', (req, res, next) => {
 
+    var desde = req.query.desde || 0;
+    desde = Number(desde);
+
     Articulo.find({})
+        .skip(desde)
+        .limit(5)
         .populate('categoria')
         .exec(
             (err, articulos) => {
@@ -23,11 +28,13 @@ app.get('/', (req, res, next) => {
                     });
                 }
 
-                res.status(200).json({
-                    ok: true,
-                    articulos
+                Articulo.count({}, (err, conteo) => {
+                    res.status(200).json({
+                        ok: true,
+                        articulos,
+                        total: conteo
+                    });
                 });
-
             });
 });
 

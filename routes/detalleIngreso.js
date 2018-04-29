@@ -11,7 +11,12 @@ var DetalleIngreso = require('../models/detalleIngreso');
 // ==========================================
 app.get('/', (req, res, next) => {
 
+    var desde = req.query.desde || 0;
+    desde = Number(desde);
+
     DetalleIngreso.find({})
+        .skip(desde)
+        .limit(5)
         .populate('articulo')
         .populate('ingreso')
         .exec(
@@ -24,11 +29,13 @@ app.get('/', (req, res, next) => {
                     });
                 }
 
-                res.status(200).json({
-                    ok: true,
-                    detalleIngresos
-                });
-
+                DetalleIngreso.count({}, (err, conteo) => {
+                    res.status(200).json({
+                        ok: true,
+                        detalleIngresos,
+                        total: conteo
+                    });
+                })
             });
 });
 
