@@ -1,10 +1,9 @@
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-var Shema = mongoose.Schema;
 
-var usuarioPermisoShema = new Shema({
+var usuarioPermisoSchema = new Schema({
     usuario: { type: Schema.Types.ObjectId, ref: 'Usuario', required: true },
     permiso: { type: Schema.Types.ObjectId, ref: 'Permiso', required: true }
 });
-
-module.exports = mongoose.model('UsuarioPermiso', usuarioPermisoShema);
+module.exports = mongoose.model('usuarioPermiso', usuarioPermisoSchema);

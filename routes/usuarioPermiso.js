@@ -99,7 +99,8 @@ app.post('/', mdAutenticacion.verificaToken, (req, res) => {
     var body = req.body;
 
     var usuarioPermiso = new UsuarioPermiso({
-        nombre: body.nombre,
+        usuario: body.usuario,
+        permiso: body.permiso
     });
 
     usuarioPermiso.save((err, usuarioPermisoGuardado) => {
@@ -112,8 +113,7 @@ app.post('/', mdAutenticacion.verificaToken, (req, res) => {
         }
         res.status(201).json({
             ok: true,
-            usuario: usuario,
-            permiso: req.permiso
+            usuarioPermiso: usuarioPermisoGuardado
         });
     })
 });
@@ -146,11 +146,12 @@ app.delete('/:id', mdAutenticacion.verificaToken, (req, res) => {
 
         res.status(200).json({
             ok: true,
-            permiso: usurioPermisoBorrado
+            usuarioPermiso: usuarioPermisoBorrado
         });
 
     });
 
 });
+
 
 module.exports = app;

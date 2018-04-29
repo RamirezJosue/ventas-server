@@ -23,6 +23,8 @@ var ingresoRoutes = require('./routes/ingreso');
 var articuloRoutes = require('./routes/articulo');
 var detalleVentaRoutes = require('./routes/detalleVenta');
 var detalleIngresoRoutes = require('./routes/detalleIngreso');
+var permisoRoutes = require('./routes/permiso');
+var usuarioPermisoRoutes = require('./routes/usuarioPermiso');
 
 // Conexion a la base de datos
 mongoose.connection.openUri('mongodb://localhost:27017/ventasDB', (err, res) => {
@@ -45,6 +47,8 @@ app.use('/ingreso', ingresoRoutes);
 app.use('/articulo', articuloRoutes);
 app.use('/detalle_venta', detalleVentaRoutes);
 app.use('/detalle_ingreso', detalleIngresoRoutes);
+app.use('/permiso', permisoRoutes);
+app.use('/usuario_permiso', usuarioPermisoRoutes);
 app.use('/', appRoutes);
 
 
