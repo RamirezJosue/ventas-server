@@ -11,6 +11,55 @@ var DetalleIngreso = require('../models/detalleIngreso');
 var Categoria = require('../models/categoria');
 var Articulo = require('../models/articulo');
 
+
+//===================================
+// Busqueda por coleccion
+//===================================
+
+app.get('/coleccion/:tabla/:busqueda', (req, res) => {
+    var busqueda = req.params.busqueda;
+    var tabla = req.params.tabla;
+    var regex = new RegExp(busqueda, 'i');
+
+    var promesa;
+
+    switch (tabla) {
+        case 'ventas':
+            promesa = buscarVentas(busqueda, regex);
+            break;
+        case 'usuarios':
+            promesa = buscarUsuarios(busqueda, regex);
+            break;
+        case 'personas':
+            promesa = buscarPersonas(busqueda, regex);
+            break;
+        case 'ingresos':
+            promesa = buscarIngresos(busqueda, regex);
+            break;
+        case 'categorias':
+            promesa = buscarCategorias(busqueda, regex);
+            break;
+        case 'articulos':
+            promesa = buscarArticulos(busqueda, regex);
+            break;
+
+        default:
+            return res.status(400).json({
+                ok: false,
+                mensaje: 'Los tipos de busqueda solo son: usuarios, medicos y hospitales',
+                error: { message: 'Tipo de tabla/coleccion no valido' }
+            });
+    }
+
+    promesa.then(data => {
+        res.status(200).json({
+            ok: true,
+            [tabla]: data
+        });
+
+    })
+})
+
 //===================================
 // Busqueda general
 //===================================
