@@ -18,7 +18,6 @@ var usuarioShema = new Shema({
     login: { type: String, unique: true, required: [true, 'El usuario es necesario'] },
     clave: { type: String, required: [true, 'La contraseña es necesario'] },
     img: { type: String, required: false },
-    condicion: { type: Boolean, required: true, default: false },
     role: { type: String, required: true, default: 'USER_ROLE', enum: rolesValidos }
 });
 

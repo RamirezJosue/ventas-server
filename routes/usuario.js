@@ -124,7 +124,6 @@ app.post('/', mdAutenticacion.verificaToken, (req, res) => {
         login: body.login,
         clave: bcrypt.hashSync(body.clave, 10),
         img: body.img,
-        condicion: body.condicion,
         role: body.role
     });
 
